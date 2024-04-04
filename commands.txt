@@ -1,0 +1,68 @@
+//vytvorenie Image s názvom vk-apache na základe Dockerfile s názvom Dockerfile-apache pričom
+//základný kontext pre build je priečinok v ktorom sa nachádzam čo reprezentuje tá podka na konci
+docker build -t vk-apache -f Dockerfile-apache .
+
+//vytvorenie kontaneru s image vk-apache, namapovanie portov tak, že vnútorný port kontajenera 80
+//sa presmeruje na vonkajsi port hostitela 8080, -d znamena, ze vystup s konzoli kontanera sa nebude zobrazovat
+//v nasej konzole, cize nastane tzv. "detach"
+docker run -d -p 8080:80 vk-apache
+
+//zastavenie kontajnera s nazvom trusting_shamir
+docker stop trusting_shamir
+
+//vymazanie kontajnera s názvom trusting_shamir
+docker rm trusting_shamir
+
+//zobrazenie vsetkych beziacich kontajnerov
+docker ps
+
+//zobrzenie všetkých lokálnych images na disku
+docker images
+
+//spustenie docker build commandu nad všetkými servismi definovanými v docker-compose.yaml súbore
+docker compose build
+
+//spustenie docker run -d commandu nad všetkými servismi definovanými v docker-compose.yaml súbore
+docker compose up -d
+
+//spustenie docker stop commandu nad všetkými servismi definovanými v docker-compose.yaml súbore
+docker compose stop
+
+//spustenie docker rm commandu nad všetkými servismi definovanými v docker-compose.yaml súbore
+docker compose down
+
+//spustenie docker run -d commandu nad všetkými servismi definovanými v docker-compose-nginx.yaml súbore
+docker compose -f docker-compose-nginx.yaml up -d
+
+//spustenie docker build commandu nad všetkými servismi definovanými v docker-compose-nginx.yaml súbore
+docker compose -f docker-compose-nginx.yaml build
+
+//získať zoznam namespaces v našom clustry
+kubectl get namespaces
+
+//vytvoriť namespace ukf v našom clustry
+kubectl create namespace ukf
+
+//nahrať a spustiť všetko čo je v súbore deployment.yaml do nášho clustra - univerzálne pre akýkoľvek typ súboru
+kubectl apply -f deployment.yaml
+
+//získať zoznam deploymentov v namespace ukf
+kubectl -n ukf get deployments
+
+//získať zoznam servisov v namespace ukf
+kubectl -n ukf get svc
+
+//získať zoznam configmap v namespace ukf
+kubectl -n ukf get configmap
+
+//získať zoznam vytvorených podov v namespace ukf
+kubectl -n ukf get pods
+
+//vymazať všetky pody v namespace ukf
+kubectl -n ukf delete pods --all
+
+//live editácia súboru typu configmap s názvom nginx-config v namespace ukf
+kubectl edit configmap nginx-config  -o yaml -n ukf
+
+//ssh do podu s názvom nginx-d64b868c9-mvt6h v namespace ukf, konkrétne do kontajnera s názvom nginx - použitý termínal je bash, alternatíva môže byť shell
+kubectl exec -it nginx-d64b868c9-mvt6h -n ukf -c nginx -- bash
